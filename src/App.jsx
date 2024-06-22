@@ -12,7 +12,7 @@ import axios from 'axios'
 
 function App() {
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [url, setUrl] = useState('');
   const [metaData, setMetaData] = useState({ title: '', image: '' });
@@ -25,20 +25,27 @@ function App() {
 
   const thumbnailMultiplier = thumbnailWidth / previewWidth;
   const [thumbnailImg, setThumbnailImg] = useState([])
+  const [previewImgNum, setPreviewImgNum] = useState(1)
   const inputRef = useRef(null);
 
+  function handleThumbnailClick(imgNum) {
+    setPreviewImgNum(imgNum);
+  }
   const handleFetchMeta = async () => {
-  const url = inputRef.current.value;
+  let url = inputRef.current.value;
+  url = url.split('?')[0];
+  console.log(url)
     try {
-      const response = await axios.get('http://localhost:5000/fetch-meta', {
+      const response = await axios.get('https://sports619.com/flask_app/fetch-meta', {
         params: { url } });
         setMetaData(response.data);
+        setTitle(true);
         console.log(metaData)
     } catch (error) {
         console.error('Error fetching meta data', error);
     }
 };
- 
+ console.log(thumbnailImg);
 
   return (
     <><div className="content">
@@ -62,9 +69,24 @@ function App() {
       {/* <GenerateForm/> */}
       {/* <PreviewImage/> */}
       {/* <Preview/> */}
-      <TemplateOne setThumbnailImg= {setThumbnailImg} articleImg={metaData.image_url} articleTitle={metaData.title}/>
-      <TemplateTwo width={previewWidth} height={previewHeight} articleImg={metaData.image_url} articleTitle={metaData.title} setThumbnailImg= {setThumbnailImg}/>
-      {console.log(thumbnailImg)}
+      {metaData.image_url &&  <>
+      {previewImgNum-1==0 ? <TemplateOne setThumbnailImg= {setThumbnailImg} articleImg={metaData.image_url} articleTitle={metaData.title} display={true}/>
+       :
+       <TemplateOne setThumbnailImg= {setThumbnailImg} articleImg={metaData.image_url} articleTitle={metaData.title} display={false}/>
+      }
+      {previewImgNum-2==0 ? 
+      <TemplateTwo width={previewWidth} height={previewHeight} articleImg={metaData.image_url} articleTitle={metaData.title} setThumbnailImg= {setThumbnailImg} display={true}/>
+      :
+      <TemplateTwo width={previewWidth} height={previewHeight} articleImg={metaData.image_url} articleTitle={metaData.title} setThumbnailImg= {setThumbnailImg} display={false}/>
+
+    }
+      </>}
+      {/* {metaData.image_url &&  <>
+      <TemplateOne setThumbnailImg= {setThumbnailImg} articleImg={metaData.image_url} articleTitle={metaData.title} display={true}/>
+      
+      <TemplateTwo width={previewWidth} height={previewHeight} articleImg={metaData.image_url} articleTitle={metaData.title} setThumbnailImg= {setThumbnailImg} display={true}/>
+      </>} */}
+     
   
   
       {/* <OtherTemplates/> */}
@@ -73,36 +95,17 @@ function App() {
       <div className='other-templates-container'>
         <h2>Choose other templates</h2>
         <div className="img-container">
+        
 
         
 
         <div className="img-div">
-            <img className='temp-img' src={thumbnailImg[0]} alt="" />
+            <img className='temp-img' src={thumbnailImg[0]} alt="" onClick={() => handleThumbnailClick(1)} />
         </div>
         <div className="img-div">
-            <img className='temp-img' src={thumbnailImg[1]} alt="" />
+            <img className='temp-img' src={thumbnailImg[1]} alt="" onClick={() => handleThumbnailClick(2)}/>
         </div>
-        {/* <div className="img-div">
-            <img className='temp-img' src={temp1} alt="" />
-        </div>
-        <div className="img-div">
-            <img className='temp-img' src={temp1} alt="" />
-        </div>
-        <div className="img-div">
-            <img className='temp-img' src={temp1} alt="" />
-        </div>
-        <div className="img-div">
-            <img className='temp-img' src={temp1} alt="" />
-        </div>
-        <div className="img-div">
-            <img className='temp-img' src={temp1} alt="" />
-        </div>
-        <div className="img-div">
-            <img className='temp-img' src={temp1} alt="" />
-        </div>
-        <div className="img-div">
-            <img className='temp-img' src={temp1} alt="" />
-        </div> */}
+        
 
         </div>
         

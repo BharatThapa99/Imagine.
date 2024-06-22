@@ -35,7 +35,7 @@ def generate_image_from_link():
             image_url = og_image_meta['content']
         else:
             # If og:image is not present, try to get the image URL from the preload link
-            preload_link = soup.find("link",{"rel":"preload"})['href']
+            preload_link = soup.find("link",{"rel":"preload"})
             if preload_link and 'href' in preload_link.attrs:
                 image_url = preload_link['href']
             else:

@@ -6,7 +6,7 @@ import Preview from './Preview';
 
 
 
-export default function TemplateTwo({width, height, articleImg, articleTitle, isThumbnail, scale=1, setThumbnailImg}) {
+export default function TemplateTwo({width, height, articleImg, articleTitle, setThumbnailImg, display}) {
 
    
   const canvasRef = useRef(null);
@@ -129,15 +129,24 @@ export default function TemplateTwo({width, height, articleImg, articleTitle, is
   
 
   return (
-    <div className='img-preview-container' style={{display:"none"}}>
-      { isThumbnail?<img src={thumbnail}  alt='Template 1'/>
-      : ""}
+    <>
+        
+    {display ? <div className='img-preview-container'>
+      <h2>Preview</h2>
+      
+      <canvas ref={canvasRef}></canvas>
+      <Preview canvasRef={canvasRef}/>
 
-<canvas ref={canvasRef} ></canvas>
-<Preview canvasRef={canvasRef}/>
-       
+
+  </div>: <div className='img-preview-container' style={{display:"none"}}>
+      <h2>Preview</h2>
+      
+      <canvas ref={canvasRef}></canvas>
+      <Preview canvasRef={canvasRef}/>
 
 
-    </div>
+  </div>}
+    
+    </>
   )
 }

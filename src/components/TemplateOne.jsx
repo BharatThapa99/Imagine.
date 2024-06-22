@@ -3,7 +3,7 @@ import { fabric } from 'fabric';
 import Preview from './Preview';
 
 
-export default function TemplateOne({setThumbnailImg, articleImg, articleTitle}) {
+export default function TemplateOne({setThumbnailImg, articleImg, articleTitle, display}) {
 
 
 const canvasRef = useRef(null);
@@ -29,6 +29,7 @@ const canvasRef = useRef(null);
   
   useEffect(() => {
     const canvas = canvasRef.current.fabric;
+    canvas.clear();
     canvas.setHeight(previewHeight);
     canvas.setWidth(previewWidth);
     canvas.setBackgroundColor('black');
@@ -89,13 +90,26 @@ const canvasRef = useRef(null);
     
 
       return (
-        <div className='img-preview-container'>
-            <h2>Preview</h2>
-            <canvas ref={canvasRef}></canvas>
-            <Preview canvasRef={canvasRef}/>
-    
-    
-        </div>
+        <>
+        
+        {display ? <div className='img-preview-container'>
+          <h2>Preview</h2>
+          
+          <canvas ref={canvasRef}></canvas>
+          <Preview canvasRef={canvasRef}/>
+  
+  
+      </div>: <div className='img-preview-container' style={{display:"none"}}>
+          <h2>Preview</h2>
+          
+          <canvas ref={canvasRef}></canvas>
+          <Preview canvasRef={canvasRef}/>
+  
+  
+      </div>}
+        
+        </>
+        
       )
 
 
