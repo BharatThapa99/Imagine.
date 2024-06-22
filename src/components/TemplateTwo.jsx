@@ -1,17 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
 import { fabric } from 'fabric';
 import fadeImage from '../assets/darkfade.png';
+import testImage from '../assets/testimage.webp';
+import Preview from './Preview';
 
 
-export default function TemplateTwo() {
+
+export default function TemplateTwo({width, height, articleImg, articleTitle, isThumbnail, scale=1, setThumbnailImg}) {
+
    
   const canvasRef = useRef(null);
   const previewWidth = 400;
   const previewHeight = 500;
-  const finalWidth = 1080;
-  const finalHeight = 1360;
-  const multiplier = finalWidth / previewWidth;
-  
+ 
 
   useEffect(() => {
     const canvas = new fabric.Canvas(canvasRef.current,{
@@ -37,7 +38,7 @@ export default function TemplateTwo() {
     canvas.clear();
 
     // if (imageUrl) {
-      fabric.Image.fromURL('https://statico.sportskeeda.com/editor/2024/06/5f2e4-17186252493345-1920.jpg', function (img) {
+      fabric.Image.fromURL(articleImg, function (img) {
         const scaleFactor = Math.max(
           previewWidth / img.width,
           previewHeight / img.height
@@ -55,7 +56,7 @@ export default function TemplateTwo() {
           scaleX: scaleFactor,
           scaleY: scaleFactor,
         });
-        canvas.add(img).setActiveObject(img);
+        canvas.add(img);
 
         // Add fade overlay
         fabric.Image.fromURL(fadeImage, function (fadeImg) {
@@ -68,11 +69,11 @@ export default function TemplateTwo() {
               scaleX: fadeScaleFactor,
               scaleY: fadeScaleFactor,
             });
-            canvas.add(fadeImg).setActiveObject(fadeImg);
-            // canvas.renderAll();
+            canvas.add(fadeImg);
+            canvas.renderAll();
 
              // Add text over the fade image
-        const text = new fabric.Textbox('Damian Priest to grant a title shot to WWE legend at Money in the Bank 2024? Exploring the possibility', {
+        const text = new fabric.Textbox(articleTitle, {
           left: 10,
           top: previewHeight * 0.75,
           fill: 'white',
@@ -83,8 +84,16 @@ export default function TemplateTwo() {
         });
 
 
-        canvas.add(text).setActiveObject(text);
+        canvas.add(text);
         canvas.renderAll();
+
+        //generateThumbnail
+        const img = canvas.toDataURL({ format: 'jpeg', quality: 0.7, multiplier:150/previewWidth})
+
+       setThumbnailImg(prevImg => [...prevImg, img]);
+       
+        
+       
 }, { crossOrigin: 'anonymous' });
         
 
@@ -111,16 +120,23 @@ export default function TemplateTwo() {
     canvas.on('object:modified', function (e) {
       e.target.opacity = 1;
     });
-  })
+    
+    
+  },{crossOrigin:"anonymous"});
+ 
   }, []);
 
-  return (
-    <div className='img-preview-container'>
-        <h2>Preview 2</h2>
-        {/* <img className='preview-img' src={PreviewImg} alt="" /> */}
-        <canvas ref={canvasRef}></canvas>
+  
 
-        {/* <button onClick={exportHighResImage}>Download High-Res Image</button> */}
+  return (
+    <div className='img-preview-container' style={{display:"none"}}>
+      { isThumbnail?<img src={thumbnail}  alt='Template 1'/>
+      : ""}
+
+<canvas ref={canvasRef} ></canvas>
+<Preview canvasRef={canvasRef}/>
+       
+
 
     </div>
   )

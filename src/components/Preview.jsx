@@ -1,21 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useRef } from 'react';
 import { fabric } from 'fabric';
-import PreviewImg from '../assets/output_image.jpg'
 
-export default function PreviewImage() {
-
-  
-     
-
-      
-    
-    // }
-  
-  
+function Preview({ canvasRef }) {
+  const finalWidth = 1080;
+  const finalHeight = 1360;
+  const multiplier = finalWidth / 400; // Assuming previewWidth is 400
 
   const exportHighResImage = () => {
-    const canvas = canvasRef.current.fabric;
-    // console.log(canvas)
+    const canvas = canvasRef.current.fabric; // Correctly reference the fabric canvas instance
+
+    // Ensure the canvas is rendered with the latest changes
     canvas.renderAll();
 
     // Convert canvas to data URL with multiplier
@@ -34,16 +28,11 @@ export default function PreviewImage() {
     document.body.removeChild(link); // Clean up anchor element
   };
 
-    
-  
   return (
-    <div className='img-preview-container'>
-        <h2>Preview</h2>
-        {/* <img className='preview-img' src={PreviewImg} alt="" /> */}
-        <canvas ref={canvasRef}></canvas>
-
-        <button onClick={exportHighResImage}>Download High-Res Image</button>
-
+    <div>
+      <button onClick={exportHighResImage}>Download High-Res Image</button>
     </div>
-  )
+  );
 }
+
+export default Preview;
