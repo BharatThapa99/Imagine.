@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fabric } from 'fabric';
 import Preview from './Preview';
+import 'fabric-history';
 
 
 export default function TemplateOne({setThumbnailImg, articleImg, articleTitle, display}) {
@@ -9,6 +10,8 @@ export default function TemplateOne({setThumbnailImg, articleImg, articleTitle, 
 const canvasRef = useRef(null);
   const previewWidth = 400;
   const previewHeight = 500;
+
+  
   
 
   useEffect(() => {
@@ -26,6 +29,7 @@ const canvasRef = useRef(null);
       canvas.dispose();
     };
   }, []);
+
   
   useEffect(() => {
     const canvas = canvasRef.current.fabric;
@@ -81,25 +85,79 @@ const canvasRef = useRef(null);
 
       canvasRef.current.fabric = canvas;
 
+      const handleKeyDown = (e) => {
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+            const activeObject = canvasRef.current.fabric.getActiveObject();
+            if (activeObject) {
+              canvasRef.current.fabric.remove(activeObject);
+            }
+          
+        }
+  
+        //Undo
+        if (e.ctrlKey && e.key === 'z') {
+         canvasRef.current.fabric.undo();
+      }
+      else if (e.ctrlKey && e.key ==='y'){
+        canvasRef.current.fabric.redo();
+      }
+  
+    };
+  
+    document.addEventListener('keydown', handleKeyDown);
+    
+
       // return () => {
       //   canvas.dispose();
       // };
 
       },[articleImg,articleTitle]);
 
+     
+
+      const handleDrop = (e) => {
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+        if (files && files[0]) {
+            const reader = new FileReader();
+            console.log(reader)
+            reader.onload = (event) => {
+                const data = event.target.result;
+                fabric.Image.fromURL(data, (img) => {
+                    img.set({
+                        left: 100,
+                        top: 100,
+                        scaleX: 0.5,
+                        scaleY: 0.5,
+                    });
+                    canvasRef.current.fabric.add(img);
+                });
+            };
+            reader.readAsDataURL(files[0]);
+        }
+    };
+    
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+
+    
+
     
 
       return (
         <>
         
-        {display ? <div className='img-preview-container'>
+        {display ? <div  onDrop={handleDrop}
+            onDragOver={handleDragOver} className='img-preview-container'>
           <h2>Preview</h2>
           
           <canvas ref={canvasRef}></canvas>
           <Preview canvasRef={canvasRef}/>
   
   
-      </div>: <div className='img-preview-container' style={{display:"none"}}>
+      </div>: <div  onDrop={handleDrop}
+            onDragOver={handleDragOver} className='img-preview-container' style={{display:"none"}}>
           <h2>Preview</h2>
           
           <canvas ref={canvasRef}></canvas>
