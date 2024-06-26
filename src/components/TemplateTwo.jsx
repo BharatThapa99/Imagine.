@@ -1,17 +1,19 @@
-import React, { useEffect, useRef, useContext } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { fabric } from 'fabric';
 import fadeImage from '../assets/darkfade.png';
-import testImage from '../assets/testimage.webp';
 import Preview from './Preview';
 
 
 
-export default function TemplateTwo({width, height, articleImg, articleTitle, setThumbnailImg, display}) {
+export default function TemplateTwo({ articleImg, articleTitle, setThumbnailImg, display}) {
 
    
   const canvasRef = useRef(null);
   const previewWidth = 400;
   const previewHeight = 500;
+  const [selectedColor, setSelectedColor] = useState('#000000');
+  // const [canvas, setCanvas] = useState()
+
  
 
   useEffect(() => {
@@ -64,10 +66,10 @@ export default function TemplateTwo({width, height, articleImg, articleTitle, se
             const fadeScaleFactor = previewWidth / fadeImg.width;
             fadeImg.set({
               left: 0,
-              top: previewHeight * 0.59,
+              top: previewHeight * 0.5,
               selectable: true,
               scaleX: fadeScaleFactor,
-              scaleY: fadeScaleFactor,
+              scaleY: fadeScaleFactor*1.3,
             });
             canvas.add(fadeImg);
             canvas.renderAll();
@@ -75,7 +77,7 @@ export default function TemplateTwo({width, height, articleImg, articleTitle, se
              // Add text over the fade image
         const text = new fabric.Textbox(articleTitle, {
           left: 10,
-          top: previewHeight * 0.75,
+          top: previewHeight * 0.68,
           fill: 'white',
           fontSize: 28,
           selectable: true,
@@ -126,8 +128,37 @@ export default function TemplateTwo({width, height, articleImg, articleTitle, se
  
   }, []);
 
-  
+  const handleColorChange = (e) => {
+    setSelectedColor(e.target.value);
+        const activeObject = canvasRef.current.fabric.getActiveObject();
+        let styles = { fill: e.target.value };
+        if (activeObject && activeObject.type === 'textbox') {
+            const selectionStart = activeObject.selectionStart;
+            const selectionEnd = activeObject.selectionEnd;
 
+            activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
+            canvasRef.current.fabric.renderAll();
+
+
+
+        }
+};
+const handleTextBackgroundChange = (e) => {
+  setSelectedColor(e.target.value);
+        const activeObject = canvasRef.current.fabric.getActiveObject();
+        let styles = { textBackgroundColor: e.target.value };
+        if (activeObject && activeObject.type === 'textbox') {
+            const selectionStart = activeObject.selectionStart;
+            const selectionEnd = activeObject.selectionEnd;
+
+            activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
+            canvasRef.current.fabric.renderAll();
+
+
+
+        }
+}
+ 
   return (
     <>
         
@@ -136,6 +167,18 @@ export default function TemplateTwo({width, height, articleImg, articleTitle, se
       
       <canvas ref={canvasRef}></canvas>
       <Preview canvasRef={canvasRef}/>
+      <strong>Text Color</strong>
+      <input 
+                type="color" 
+                value={selectedColor} 
+                onChange={handleColorChange} 
+            />
+            <strong>Text Background</strong>
+            <input 
+                type="color" 
+                value={selectedColor} 
+                onChange={handleTextBackgroundChange} 
+            />
 
 
   </div>: <div className='img-preview-container' style={{display:"none"}}>

@@ -75,9 +75,9 @@ function App() {
        <TemplateOne setThumbnailImg= {setThumbnailImg} articleImg={metaData.image_url} articleTitle={metaData.title} display={false}/>
       }
       {previewImgNum-2==0 ? 
-      <TemplateTwo width={previewWidth} height={previewHeight} articleImg={metaData.image_url} articleTitle={metaData.title} setThumbnailImg= {setThumbnailImg} display={true}/>
+      <TemplateTwo articleImg={metaData.image_url} articleTitle={metaData.title} setThumbnailImg= {setThumbnailImg} display={true}/>
       :
-      <TemplateTwo width={previewWidth} height={previewHeight} articleImg={metaData.image_url} articleTitle={metaData.title} setThumbnailImg= {setThumbnailImg} display={false}/>
+      <TemplateTwo articleImg={metaData.image_url} articleTitle={metaData.title} setThumbnailImg= {setThumbnailImg} display={false}/>
 
     }
       </>}
