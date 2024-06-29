@@ -2,13 +2,14 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background: url('assets/background-gradient-lights.jpg') no-repeat center fixed;
-    background-size: cover;
+    height: 100%;
 }
 #root {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    height: 100%;
+    
     
 }

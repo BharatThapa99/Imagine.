@@ -1,8 +1,14 @@
 body {
+  position:relative;
   padding: 0;
   margin: 0;
-  height: 100vh;
-  backdrop-filter: brightness(0.6);
+  /* height: 100%; */
+  background: url('assets/background-gradient-lights.jpg') no-repeat center fixed;
+  background-size: cover;
+  backdrop-filter: brightness(0.7);
+  min-height: 100%;
+  
+
 }
 
 .staatliches-regular {
@@ -12,11 +18,13 @@ body {
 }
 
 .content {
-    width: 70%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    width: 70%;
+
+    
 }
 
 .title-text {
@@ -70,8 +78,8 @@ body {
   }
 .img-preview-container {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    flex-direction: row;
+    gap: 15px;
     margin-top: 10px;
     align-items: center;
 }
@@ -105,3 +113,101 @@ body {
     width: auto;
     cursor: pointer;
   }
+  .other-templates-container > h2 {
+    font-family: "inter",sans-serif;
+  }
+  .img-preview-container > h2 {
+    font-family: "inter",sans-serif;
+  }
+  .sub-title {
+    display: block;
+    font-family: "inter";
+    color: white;
+    padding: 1px;
+    text-align: center;
+  }
+
+  .properties-panel {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    gap: 10px;
+    margin-left: 80px;
+    width: auto;
+    font-family: "inter";
+    background-color: #53364c87;
+}
+.prop-nav {
+  display: flex;
+  gap: 20px;
+  font-weight: 600;
+    color: #c5baba;
+    background-color: #35013ff7;
+
+
+}
+.prop-text {
+  background-color: #631c5c;
+  padding: 10px;
+  /* margin-left: 5px; */
+  border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.prop-image {
+  padding: 10px;
+}
+.prop-value {
+    padding: 15px;
+    display: flex;
+  color: white;
+  flex-wrap: wrap;
+
+}
+.prop-value > div {
+  display: flex;
+  gap: 10px;
+}
+.prop-value > div > input {
+  padding: 0;
+  border: none;
+  appearance: none;
+  inline-size: 30px;
+  block-size: 30px;
+  background-color: transparent;
+}
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+
+
+
+
+@media  screen and (max-width: 480px) {
+  .url-input-form {
+      width: 100%;
+  }
+  .content {
+    width: 90%;
+  }
+  .img-preview-container {
+    flex-direction: column;
+  }
+
+  
+  .other-templates-container {
+      width: 100%;
+  }
+  .properties-panel {
+    margin-left: 0px;
+  }
+  .canvas-container, .lower-canvas, .upper-canvas {
+    width: 300px !important;
+    height: 400px !important;
+
+  }
+  
+
+  
+}

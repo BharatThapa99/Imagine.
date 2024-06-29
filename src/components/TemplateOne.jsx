@@ -6,11 +6,14 @@ import 'fabric-history';
 
 export default function TemplateOne({setThumbnailImg, articleImg, articleTitle, display}) {
 
+  console.log(display);
+
 
 const canvasRef = useRef(null);
   const previewWidth = 400;
   const previewHeight = 500;
 
+  const [selectedColor, setSelectedColor] = useState('#000000');
   
   
 
@@ -20,6 +23,7 @@ const canvasRef = useRef(null);
     });
     canvas.setHeight(previewHeight);
     canvas.setWidth(previewWidth);
+
     canvas.selection = true;
 
     // Attach the fabric canvas instance to the ref
@@ -33,15 +37,12 @@ const canvasRef = useRef(null);
   
   useEffect(() => {
     const canvas = canvasRef.current.fabric;
+    
     canvas.clear();
-    canvas.setHeight(previewHeight);
-    canvas.setWidth(previewWidth);
     canvas.setBackgroundColor('black');
-    canvas.selection = true;
     // let imageURL = 'https://statico.sportskeeda.com/editor/2024/06/5f2e4-17186252493345-1920.jpg'
     
     // if (imageUrl) {
-    console.log(articleImg);
       fabric.Image.fromURL(articleImg, function(img) {
         const scaleFactor = Math.min(
           canvas.width / img.width,
@@ -86,7 +87,7 @@ const canvasRef = useRef(null);
       canvasRef.current.fabric = canvas;
 
       const handleKeyDown = (e) => {
-        if (e.key === 'Delete' || e.key === 'Backspace') {
+        if (e.key === 'Delete') {
             const activeObject = canvasRef.current.fabric.getActiveObject();
             if (activeObject) {
               canvasRef.current.fabric.remove(activeObject);
@@ -111,7 +112,7 @@ const canvasRef = useRef(null);
       //   canvas.dispose();
       // };
 
-      },[articleImg,articleTitle]);
+      },[]);
 
      
 
@@ -141,6 +142,38 @@ const canvasRef = useRef(null);
         e.preventDefault();
     };
 
+
+    const handleColorChange = (e) => {
+      setSelectedColor(e.target.value);
+          const activeObject = canvasRef.current.fabric.getActiveObject();
+          let styles = { fill: e.target.value };
+          if (activeObject && activeObject.type === 'textbox') {
+              const selectionStart = activeObject.selectionStart;
+              const selectionEnd = activeObject.selectionEnd;
+  
+              activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
+              canvasRef.current.fabric.renderAll();
+  
+  
+  
+          }
+  };
+  const handleTextBackgroundChange = (e) => {
+    setSelectedColor(e.target.value);
+          const activeObject = canvasRef.current.fabric.getActiveObject();
+          let styles = { textBackgroundColor: e.target.value };
+          if (activeObject && activeObject.type === 'textbox') {
+              const selectionStart = activeObject.selectionStart;
+              const selectionEnd = activeObject.selectionEnd;
+  
+              activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
+              canvasRef.current.fabric.renderAll();
+  
+  
+  
+          }
+  }
+
     
 
     
@@ -148,20 +181,64 @@ const canvasRef = useRef(null);
       return (
         <>
         
-        {display ? <div  onDrop={handleDrop}
+        {display ? 
+        
+        
+        <div  onDrop={handleDrop}
             onDragOver={handleDragOver} className='img-preview-container'>
-          <h2>Preview</h2>
+        <div className="layers-panel">
+          <span>Layers</span>
+        </div>
+              <div className="preview">
+              <h2>Preview</h2>
           
-          <canvas ref={canvasRef}></canvas>
-          <Preview canvasRef={canvasRef}/>
+                <canvas ref={canvasRef}></canvas>
+                <Preview canvasRef={canvasRef}/>
+              </div>
+
+              <div className="properties-panel">
+                <div className="prop-nav">
+                  <span className="prop-text">Text</span>
+                  <span className="prop-image">Coming soon</span>
+                </div>
+                <div className="prop-value">
+                  <div>
+                <span>Color: </span>
+      <input 
+                type="color" 
+                value={selectedColor} 
+                onChange={handleColorChange} 
+            />
+            <span>Background: </span>
+            <input 
+                type="color" 
+                value={selectedColor} 
+                onChange={handleTextBackgroundChange} 
+                
+            />
+            </div>
+            <br/>
+            <div>
+            <span>Font: </span>
+            <span>Font Size: </span>
+            </div>
+                </div>
+
+                
+              
+              </div>
+          
+          
+
   
   
       </div>: <div  onDrop={handleDrop}
             onDragOver={handleDragOver} className='img-preview-container' style={{display:"none"}}>
           <h2>Preview</h2>
+                    <canvas ref={canvasRef}></canvas>
+
           
-          <canvas ref={canvasRef}></canvas>
-          <Preview canvasRef={canvasRef}/>
+
   
   
       </div>}

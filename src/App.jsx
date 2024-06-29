@@ -69,7 +69,10 @@ function App() {
       {/* <GenerateForm/> */}
       {/* <PreviewImage/> */}
       {/* <Preview/> */}
+      
       {metaData.image_url &&  <>
+      {console.log(previewImgNum)}
+      {console.log("inside metadata.image_url")}
       {previewImgNum-1==0 ? <TemplateOne setThumbnailImg= {setThumbnailImg} articleImg={metaData.image_url} articleTitle={metaData.title} display={true}/>
        :
        <TemplateOne setThumbnailImg= {setThumbnailImg} articleImg={metaData.image_url} articleTitle={metaData.title} display={false}/>
@@ -90,28 +93,36 @@ function App() {
   
   
       {/* <OtherTemplates/> */}
+      
 
-
+      {thumbnailImg[0] && <>
       <div className='other-templates-container'>
-        <h2>Choose other templates</h2>
+      <h2>Choose other templates</h2>
+        
         <div className="img-container">
         
 
         
-
+        
         <div className="img-div">
             <img className='temp-img' src={thumbnailImg[0]} alt="" onClick={() => handleThumbnailClick(1)} />
+            <span className='sub-title'>Default</span>
         </div>
         <div className="img-div">
             <img className='temp-img' src={thumbnailImg[1]} alt="" onClick={() => handleThumbnailClick(2)}/>
+            <span className="sub-title">Unilad</span>
         </div>
+      
         
 
         </div>
         
-    </div>
+    </div></>
+    }
 
       </div>
+
+      {/* properties panel */}
     </>
   )
 }

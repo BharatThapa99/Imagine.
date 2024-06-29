@@ -93,6 +93,27 @@ export default function TemplateTwo({ articleImg, articleTitle, setThumbnailImg,
         const img = canvas.toDataURL({ format: 'jpeg', quality: 0.7, multiplier:150/previewWidth})
 
        setThumbnailImg(prevImg => [...prevImg, img]);
+
+       const handleKeyDown = (e) => {
+        if (e.key === 'Delete') {
+            const activeObject = canvasRef.current.fabric.getActiveObject();
+            if (activeObject) {
+              canvasRef.current.fabric.remove(activeObject);
+            }
+          
+        }
+  
+        //Undo
+        if (e.ctrlKey && e.key === 'z') {
+         canvasRef.current.fabric.undo();
+      }
+      else if (e.ctrlKey && e.key ==='y'){
+        canvasRef.current.fabric.redo();
+      }
+    }
+      
+      
+    document.addEventListener('keydown', handleKeyDown);
        
         
        
@@ -122,11 +143,40 @@ export default function TemplateTwo({ articleImg, articleTitle, setThumbnailImg,
     canvas.on('object:modified', function (e) {
       e.target.opacity = 1;
     });
-    
-    
+
+  
   },{crossOrigin:"anonymous"});
  
   }, []);
+
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+        const reader = new FileReader();
+        console.log(reader)
+        reader.onload = (event) => {
+            const data = event.target.result;
+            fabric.Image.fromURL(data, (img) => {
+                img.set({
+                    left: 100,
+                    top: 100,
+                    scaleX: 0.5,
+                    scaleY: 0.5,
+                });
+                canvasRef.current.fabric.add(img);
+                canvasRef.current.fabric.sendToBack(img);
+            });
+        };
+        reader.readAsDataURL(files[0]);
+    }
+};
+
+const handleDragOver = (e) => {
+    e.preventDefault();
+};
+
 
   const handleColorChange = (e) => {
     setSelectedColor(e.target.value);
@@ -162,7 +212,8 @@ const handleTextBackgroundChange = (e) => {
   return (
     <>
         
-    {display ? <div className='img-preview-container'>
+    {display ? <div onDrop={handleDrop}
+            onDragOver={handleDragOver} className='img-preview-container'>
       <h2>Preview</h2>
       
       <canvas ref={canvasRef}></canvas>
@@ -181,11 +232,11 @@ const handleTextBackgroundChange = (e) => {
             />
 
 
-  </div>: <div className='img-preview-container' style={{display:"none"}}>
+  </div>: <div onDrop={handleDrop}
+            onDragOver={handleDragOver} className='img-preview-container' style={{display:"none"}}>
       <h2>Preview</h2>
       
       <canvas ref={canvasRef}></canvas>
-      <Preview canvasRef={canvasRef}/>
 
 
   </div>}
