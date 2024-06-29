@@ -112,7 +112,7 @@ const canvasRef = useRef(null);
       //   canvas.dispose();
       // };
 
-      },[]);
+      },[articleImg,articleTitle]);
 
      
 
