@@ -83,12 +83,14 @@ body {
     margin-top: 10px;
     align-items: center;
 }
-.img-preview-container > h2 {
-    color: white;
-}
+
   .preview-img {
     height: 500px;
     width: auto;
+  }
+
+  .preview {
+    margin-top: 30px;
   }
 
   .other-templates-container {
@@ -116,7 +118,8 @@ body {
   .other-templates-container > h2 {
     font-family: "inter",sans-serif;
   }
-  .img-preview-container > h2 {
+  .img-preview-container > div > h2 {
+    color: white;
     font-family: "inter",sans-serif;
   }
   .sub-title {

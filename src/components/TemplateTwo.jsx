@@ -214,7 +214,6 @@ const handleTextBackgroundChange = (e) => {
         
     {display ? <div onDrop={handleDrop}
             onDragOver={handleDragOver} className='img-preview-container'>
-      <h2>Preview</h2>
       
       <canvas ref={canvasRef}></canvas>
       <Preview canvasRef={canvasRef}/>
@@ -233,8 +232,7 @@ const handleTextBackgroundChange = (e) => {
 
 
   </div>: <div className='img-preview-container' style={{display:"none"}}>
-      <h2>Preview</h2>
-      
+     
       <canvas ref={canvasRef}></canvas>
       <Preview canvasRef={canvasRef}/>
 
