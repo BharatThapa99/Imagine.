@@ -143,36 +143,36 @@ const canvasRef = useRef(null);
     };
 
 
-    const handleColorChange = (e) => {
-      setSelectedColor(e.target.value);
-          const activeObject = canvasRef.current.fabric.getActiveObject();
-          let styles = { fill: e.target.value };
-          if (activeObject && activeObject.type === 'textbox') {
-              const selectionStart = activeObject.selectionStart;
-              const selectionEnd = activeObject.selectionEnd;
+  //   const handleColorChange = (e) => {
+  //     setSelectedColor(e.target.value);
+  //         const activeObject = canvasRef.current.fabric.getActiveObject();
+  //         let styles = { fill: e.target.value };
+  //         if (activeObject && activeObject.type === 'textbox') {
+  //             const selectionStart = activeObject.selectionStart;
+  //             const selectionEnd = activeObject.selectionEnd;
   
-              activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
-              canvasRef.current.fabric.renderAll();
-  
-  
-  
-          }
-  };
-  const handleTextBackgroundChange = (e) => {
-    setSelectedColor(e.target.value);
-          const activeObject = canvasRef.current.fabric.getActiveObject();
-          let styles = { textBackgroundColor: e.target.value };
-          if (activeObject && activeObject.type === 'textbox') {
-              const selectionStart = activeObject.selectionStart;
-              const selectionEnd = activeObject.selectionEnd;
-  
-              activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
-              canvasRef.current.fabric.renderAll();
+  //             activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
+  //             canvasRef.current.fabric.renderAll();
   
   
   
-          }
-  }
+  //         }
+  // };
+  // const handleTextBackgroundChange = (e) => {
+  //   setSelectedColor(e.target.value);
+  //         const activeObject = canvasRef.current.fabric.getActiveObject();
+  //         let styles = { textBackgroundColor: e.target.value };
+  //         if (activeObject && activeObject.type === 'textbox') {
+  //             const selectionStart = activeObject.selectionStart;
+  //             const selectionEnd = activeObject.selectionEnd;
+  
+  //             activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
+  //             canvasRef.current.fabric.renderAll();
+  
+  
+  
+  //         }
+  // }
 
     
 
@@ -186,9 +186,9 @@ const canvasRef = useRef(null);
         
         <div  onDrop={handleDrop}
             onDragOver={handleDragOver} className='img-preview-container'>
-        <div className="layers-panel">
+        {/* <div className="layers-panel">
           <span>Layers</span>
-        </div>
+        </div> */}
               <div className="preview">
               <h2>Preview</h2>
           
@@ -196,7 +196,7 @@ const canvasRef = useRef(null);
                 <Preview canvasRef={canvasRef}/>
               </div>
 
-              <div className="properties-panel">
+              {/* <div className="properties-panel">
                 <div className="prop-nav">
                   <span className="prop-text">Text</span>
                   <span className="prop-image">Coming soon</span>
@@ -226,7 +226,7 @@ const canvasRef = useRef(null);
 
                 
               
-              </div>
+              </div> */}
           
           
 
@@ -237,7 +237,7 @@ const canvasRef = useRef(null);
           <h2>Preview</h2>
                     <canvas ref={canvasRef}></canvas>
 
-          
+                    <Preview canvasRef={canvasRef}/>
 
   
   
