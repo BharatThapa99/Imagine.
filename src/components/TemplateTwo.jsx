@@ -11,7 +11,8 @@ export default function TemplateTwo({ articleImg, articleTitle, setThumbnailImg,
   const canvasRef = useRef(null);
   const previewWidth = 400;
   const previewHeight = 500;
-  const [selectedColor, setSelectedColor] = useState('#000000');
+  const [selectedTextColor, setSelectedTextColor] = useState('#000000');
+  const [selectedTextBGColor, setSelectedTextBGColor] = useState('#000000');
   // const [canvas, setCanvas] = useState()
 
  
@@ -178,63 +179,102 @@ const handleDragOver = (e) => {
 };
 
 
-  const handleColorChange = (e) => {
-    setSelectedColor(e.target.value);
-        const activeObject = canvasRef.current.fabric.getActiveObject();
-        let styles = { fill: e.target.value };
-        if (activeObject && activeObject.type === 'textbox') {
-            const selectionStart = activeObject.selectionStart;
-            const selectionEnd = activeObject.selectionEnd;
+const handleColorChange = (e) => {
+  setSelectedTextColor(e.target.value);
+      const activeObject = canvasRef.current.fabric.getActiveObject();
+      let styles = { fill: e.target.value };
+      if (activeObject && activeObject.type === 'textbox') {
+          const selectionStart = activeObject.selectionStart;
+          const selectionEnd = activeObject.selectionEnd;
 
-            activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
-            canvasRef.current.fabric.renderAll();
+          activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
+          canvasRef.current.fabric.renderAll();
 
 
 
-        }
+      }
 };
 const handleTextBackgroundChange = (e) => {
-  setSelectedColor(e.target.value);
-        const activeObject = canvasRef.current.fabric.getActiveObject();
-        let styles = { textBackgroundColor: e.target.value };
-        if (activeObject && activeObject.type === 'textbox') {
-            const selectionStart = activeObject.selectionStart;
-            const selectionEnd = activeObject.selectionEnd;
+setSelectedTextBGColor(e.target.value);
+      const activeObject = canvasRef.current.fabric.getActiveObject();
+      let styles = { textBackgroundColor: e.target.value };
+      if (activeObject && activeObject.type === 'textbox') {
+          const selectionStart = activeObject.selectionStart;
+          const selectionEnd = activeObject.selectionEnd;
 
-            activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
-            canvasRef.current.fabric.renderAll();
+          activeObject.setSelectionStyles(styles, selectionStart, selectionEnd);
+          canvasRef.current.fabric.renderAll();
 
 
 
-        }
+      }
 }
  
   return (
     <>
         
-    {display ? <div onDrop={handleDrop}
-            onDragOver={handleDragOver} className='img-preview-container'>
+    {display ? 
+    
+    
+    <div  onDrop={handleDrop}
+        onDragOver={handleDragOver} className='img-preview-container'>
+    <div className="layers-panel">
+      <span>Layers</span>
+    </div>
+          <div className="preview">
+          
+      
+            <canvas ref={canvasRef}></canvas>
+            <Preview canvasRef={canvasRef}/>
+          </div>
+
+          <div className="properties-panel">
+            <div className="prop-nav">
+              <span className="prop-text">Text</span>
+              <span className="prop-image">Coming soon</span>
+            </div>
+            <div className="prop-value">
+              <div>
+            <span>Color: </span>
+  <input 
+            type="color" 
+            value={selectedTextColor} 
+            onChange={handleColorChange} 
+        />
+        <span>Background: </span>
+        <input 
+            type="color" 
+            value={selectedTextBGColor} 
+            onChange={handleTextBackgroundChange} 
+            
+        />
+        </div>
+        <br/>
+        <div>
+        <span>Font: Staatliches</span>
+        <span>Font Size: 28</span>
+        </div>
+            </div>
+
+            
+          
+          </div>
+      
+      
+
+
+
+  </div>: <div  className='img-preview-container' style={{display:"none"}}>
+    {/* the html structure must be same as above therefore empty div */}
+    <div > 
+
+    </div>
+    <div className="preview">
+
       
       <canvas ref={canvasRef}></canvas>
-      <Preview canvasRef={canvasRef}/>
-      <strong>Text Color</strong>
-      <input 
-                type="color" 
-                value={selectedColor} 
-                onChange={handleColorChange} 
-            />
-            <strong>Text Background</strong>
-            <input 
-                type="color" 
-                value={selectedColor} 
-                onChange={handleTextBackgroundChange} 
-            />
 
-
-  </div>: <div className='img-preview-container' style={{display:"none"}}>
-     
-      <canvas ref={canvasRef}></canvas>
-      <Preview canvasRef={canvasRef}/>
+    </div>
 
 
   </div>}

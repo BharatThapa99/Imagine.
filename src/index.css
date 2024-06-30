@@ -13,3 +13,7 @@ html {
     
     
 }
+@font-face {
+    font-family: Staatliches;
+    src: url('./assets/Staatliches-Regular.ttf');
+}

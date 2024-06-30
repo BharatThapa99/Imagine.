@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { fabric } from 'fabric';
 import Preview from './Preview';
 import 'fabric-history';
+import fontUrl from '../assets/Staatliches-Regular.ttf'
 
 
 export default function TemplateOne({setThumbnailImg, articleImg, articleTitle, display}) {
@@ -13,8 +14,21 @@ const canvasRef = useRef(null);
   const previewWidth = 400;
   const previewHeight = 500;
 
-  const [selectedColor, setSelectedColor] = useState('#000000');
+  const [selectedTextColor, setSelectedTextColor] = useState('#000000');
+  const [selectedTextBGColor, setSelectedTextBGColor] = useState('#000000');
+  const [isFontLoaded, setIsFontLoaded] = useState(false)
   
+  useEffect(() => {
+    // Preload the custom font
+    const font = new FontFace('Staatliches', `url(${fontUrl})`);
+    font.load().then(() => {
+        document.fonts.add(font);
+        console.log('Font loaded');
+        setIsFontLoaded(true); // Update the loading state
+    }).catch(err => {
+        console.error('Failed to load font', err);
+    });
+}, []);
   
 
   useEffect(() => {
@@ -25,6 +39,8 @@ const canvasRef = useRef(null);
     canvas.setWidth(previewWidth);
 
     canvas.selection = true;
+    
+   
 
     // Attach the fabric canvas instance to the ref
     canvasRef.current.fabric = canvas;
@@ -32,10 +48,11 @@ const canvasRef = useRef(null);
     return () => {
       canvas.dispose();
     };
-  }, []);
+  }, [isFontLoaded]);
 
   
   useEffect(() => {
+    if (isFontLoaded) {
     const canvas = canvasRef.current.fabric;
     
     canvas.clear();
@@ -106,13 +123,15 @@ const canvasRef = useRef(null);
     };
   
     document.addEventListener('keydown', handleKeyDown);
+
+  } //if isfontlaoded bracket
     
 
       // return () => {
       //   canvas.dispose();
       // };
 
-      },[articleImg,articleTitle]);
+      },[isFontLoaded, articleImg,articleTitle]);
 
      
 
@@ -144,7 +163,7 @@ const canvasRef = useRef(null);
 
 
     const handleColorChange = (e) => {
-      setSelectedColor(e.target.value);
+      setSelectedTextColor(e.target.value);
           const activeObject = canvasRef.current.fabric.getActiveObject();
           let styles = { fill: e.target.value };
           if (activeObject && activeObject.type === 'textbox') {
@@ -159,7 +178,7 @@ const canvasRef = useRef(null);
           }
   };
   const handleTextBackgroundChange = (e) => {
-    setSelectedColor(e.target.value);
+    setSelectedTextBGColor(e.target.value);
           const activeObject = canvasRef.current.fabric.getActiveObject();
           let styles = { textBackgroundColor: e.target.value };
           if (activeObject && activeObject.type === 'textbox') {
@@ -206,13 +225,13 @@ const canvasRef = useRef(null);
                 <span>Color: </span>
       <input 
                 type="color" 
-                value={selectedColor} 
+                value={selectedTextColor} 
                 onChange={handleColorChange} 
             />
             <span>Background: </span>
             <input 
                 type="color" 
-                value={selectedColor} 
+                value={selectedTextBGColor} 
                 onChange={handleTextBackgroundChange} 
                 
             />
